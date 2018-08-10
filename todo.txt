@@ -5,7 +5,6 @@ CURRENTLY WORKING ON PROJECT USING VISUAL STUDIO
 ----------------------
 TODO
 ----------------------
-put files up on github for easy access / updating / version control
 
 rework time system using SFML time
 
@@ -17,7 +16,7 @@ Merge Ball physics object and CircleShape in one class
 	-use inheritance?
 
 Add a paddle for the ball to bounce off of
-	-requires drawing a rectangle
+	-requires drawing a rectangle - done
 	-do you want the paddle to be a physics based obj with acceleration, velocity, etc
 	 or just have the controls move the position of the paddle?
 	-requires collision detection

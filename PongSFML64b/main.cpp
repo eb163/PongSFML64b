@@ -127,7 +127,22 @@ int main()
 	paddleSprite.setOrigin(paddleSprite.getSize().x / 2, paddleSprite.getSize().y / 2);
 
 	//initialize the paddle located arbitrarily at the bottom of the screen
-	paddleSprite.setPosition(mainWindow.getSize().x / 2, mainWindow.getSize().y * 0.9);
+	paddleSprite.setPosition(mainWindow.getSize().x / 2, mainWindow.getSize().y * 0.8);
+
+	//creating some basic walls to test collision detection
+	sf::RectangleShape wallSprite;
+	wallSprite.setOutlineColor(sf::Color::Red);
+	wallSprite.setFillColor(sf::Color::Red);
+	wallSprite.setSize(sf::Vector2f(100, 1));
+	wallSprite.setScale(screenMultiplier * 2, screenMultiplier * 2);
+	wallSprite.setOrigin(wallSprite.getSize().x / 2, wallSprite.getSize().y / 2);
+
+	sf::RectangleShape wall1 = wallSprite, wall2 = wallSprite, wall3 = wallSprite, wall4 = wallSprite;
+	wall1.setPosition(mainWindow.getSize().x / 2, 0); //top wall
+	wall2.setRotation(90); wall2.setPosition(mainWindow.getSize().x, mainWindow.getSize().y / 2); //right side wall
+	wall3.setPosition(mainWindow.getSize().x / 2, mainWindow.getSize().y); //bottom wall
+	wall4.setRotation(90); wall4.setPosition(0, mainWindow.getSize().y / 2); //left side wall
+
 
 
 	while (mainWindow.isOpen())
@@ -199,6 +214,10 @@ int main()
 			//game stuff
 			mainWindow.draw(ballSprite);
 			mainWindow.draw(paddleSprite);
+			mainWindow.draw(wall1);
+			mainWindow.draw(wall2);
+			mainWindow.draw(wall3);
+			mainWindow.draw(wall4);
 
 			mainWindow.display();
 		}
