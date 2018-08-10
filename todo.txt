@@ -1,0 +1,35 @@
+PONG SFML 64 bit
+
+NOTES:
+CURRENTLY WORKING ON PROJECT USING VISUAL STUDIO
+----------------------
+TODO
+----------------------
+put files up on github for easy access / updating / version control
+
+rework time system using SFML time
+
+might need to rework physics updating in the future
+		-ideally physics would be updated every clock tick
+		-while graphics is limited to "x times per second"
+
+Merge Ball physics object and CircleShape in one class
+	-use inheritance?
+
+Add a paddle for the ball to bounce off of
+	-requires drawing a rectangle
+	-do you want the paddle to be a physics based obj with acceleration, velocity, etc
+	 or just have the controls move the position of the paddle?
+	-requires collision detection
+		-might be able to use sf::Rectangle class
+		-see if sf::CircleShape class tracks edges of circle
+
+Add a wall to bounce the ball off of (1 player game)
+
+Could have a two player game with two paddles on opposite sides of the screen
+
+Add a menu screen for user to select between 1 or 2 player mode
+
+Add game data such as tracking scores
+
+rework project structure to be self contained (currently have SFML include files pathing to Libraries in VS files)
