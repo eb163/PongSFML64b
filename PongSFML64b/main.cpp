@@ -102,6 +102,8 @@ int main()
 	frameCounterText.setFont(font);
 	frameCounterText.setCharacterSize(TEXT_SIZE);
 
+
+	//creating the ball
 	float initialX = 0.01f, initialY = 0.01f;
 	//Ball ballObj(0, 0, initialX, initialY);
 	Ball ballObj(initialX, initialY);
@@ -115,6 +117,18 @@ int main()
 
 	//initialize the ball in the middle of the screen
 	ballSprite.setPosition(mainWindow.getSize().x / 2 - ballSprite.getScale().x / 2, mainWindow.getSize().y / 2 - ballSprite.getScale().y / 2);
+
+	//creating the paddle
+	sf::RectangleShape paddleSprite;
+	paddleSprite.setOutlineColor(sf::Color::White);
+	paddleSprite.setFillColor(sf::Color::White);
+	paddleSprite.setSize(sf::Vector2f(7, 1));
+	paddleSprite.setScale(screenMultiplier * 2, screenMultiplier * 2);
+	paddleSprite.setOrigin(paddleSprite.getSize().x / 2, paddleSprite.getSize().y / 2);
+
+	//initialize the paddle located arbitrarily at the bottom of the screen
+	paddleSprite.setPosition(mainWindow.getSize().x / 2, mainWindow.getSize().y * 0.9);
+
 
 	while (mainWindow.isOpen())
 	{
@@ -184,6 +198,7 @@ int main()
 
 			//game stuff
 			mainWindow.draw(ballSprite);
+			mainWindow.draw(paddleSprite);
 
 			mainWindow.display();
 		}
