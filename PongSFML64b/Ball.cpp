@@ -10,64 +10,46 @@ x = x(0) + v * dt = x(0) + (1/2) * a * dt^2
 
 Ball::Ball()
 {
-	pastAccX = pastAccY = accX = accY = 0;
-	pastVelX = pastVelY = velX = velY = 0;
-	pastDX = pastDY = dX = dY = 0;
+	this->setAccX(0);
+	this->setAccY(0);
+	this->update(0);
+
+	sprite.setFillColor(sf::Color::White);
+	sprite.setOutlineColor(sf::Color::White);
+	sprite.setRadius(1.0f);
+	sprite.setScale(100.0f, 100.0f); //arbitrary for now
+	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
 }
 Ball::Ball(float initialAccX, float initialAccY)
 {
-	//accX = initialAccX;
-	//accY = initialAccY;
-	pastAccX = initialAccX;
-	pastAccY = initialAccY;
-	accX = accY = 0;
-	pastVelX = pastVelY = velX = velY = 0;
-	pastDX = pastDY = dX = dY = 0;
-	this->update(0);
-}
-Ball::Ball(float initialAccX, float initialAccY, float initialVelX, float initialVelY)
-{
-	pastAccX = initialAccX;
-	pastAccY = initialAccY;
-	pastVelX = initialVelX;
-	pastVelY = initialVelY;
-	accX = accY = 0;
-	velX = velY = 0;
-	pastDX = pastDY = dX = dY = 0;
+	this->setAccX(initialAccX);
+	this->setAccY(initialAccY);
 	this->update(0);
 
+	sprite.setFillColor(sf::Color::White);
+	sprite.setOutlineColor(sf::Color::White);
+	sprite.setRadius(1.0f);
+	sprite.setScale(100.0f, 100.0f); //arbitrary for now
+	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
+}
+Ball::Ball(sf::Vector2f acc, sf::Color color, float radius, sf::Vector2f scale, sf::Vector2f pos)
+{
+	this->setAccX(acc.x);
+	this->setAccY(acc.y);
+	this->update(0);
+
+	sprite.setFillColor(color);
+	sprite.setOutlineColor(color);
+	sprite.setRadius(radius);
+	sprite.setScale(scale.x, scale.y);
+	sprite.setPosition(pos.x, pos.y);
 }
 void Ball::update(float dtime) //takes time in seconds (or fractions of)
 {
-	accX = pastAccX;
-	accY = pastAccY;
-	cout << "Acceleration: (" << accX << ", " << accY << ")" << endl;
+	this->PhysObj::update(dtime);
+}
 
-	pastVelX = velX;
-	pastVelY = velY;
-	velX = pastVelX + accX * dtime;
-	velY = pastVelY + accY * dtime;
-	cout << "Velocity: (" << velX << ", " << velY << ")" << endl;
-
-	pastDX = dX;
-	pastDY = dY;
-	dX = pastDX + 0.5f * velX * dtime;
-	dY = pastDY + 0.5f * velY * dtime;
-	cout << "Delta X: (" << dX << ", " << dY << ")" << endl;
-}
-void Ball::setAccX(float newAccX)
+sf::CircleShape& Ball::getSprite()
 {
-	accX = newAccX;
-}
-void Ball::setAccY(float newAccY)
-{
-	accY = newAccY;
-}
-float Ball::getDeltaX()
-{
-	return dX;
-}
-float Ball::getDeltaY()
-{
-	return dY;
+	return sprite;
 }

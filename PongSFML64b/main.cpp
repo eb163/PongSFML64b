@@ -5,6 +5,7 @@
 #include <ratio>
 #include <iostream>
 #include <string>
+#include "PhysObj.h"
 #include "Ball.h"
 
 using std::cout;
@@ -21,6 +22,7 @@ int main()
 
 	float screenRatioWidthToHeight = mainWidth / mainHeight;
 	float screenMultiplier = mainWidth / 100;
+	sf::Vector2f screenScale(screenMultiplier, screenMultiplier);
 
 	sf::Font font;
 	font.loadFromFile("fonts/arial.ttf");
@@ -103,20 +105,10 @@ int main()
 	frameCounterText.setCharacterSize(TEXT_SIZE);
 
 
-	//creating the ball
+	//creating the ball (sprite and physical object are merged in one class)
 	float initialX = 0.01f, initialY = 0.01f;
-	//Ball ballObj(0, 0, initialX, initialY);
-	Ball ballObj(initialX, initialY);
-
-	sf::CircleShape ballSprite;
-	ballSprite.setOutlineColor(sf::Color::White);
-	ballSprite.setFillColor(sf::Color::White);
-	ballSprite.setRadius(1.f);
-	ballSprite.setScale(screenMultiplier * 2, screenMultiplier * 2);
-	ballSprite.setOrigin(ballSprite.getRadius(), ballSprite.getRadius());
-
-	//initialize the ball in the middle of the screen
-	ballSprite.setPosition(mainWindow.getSize().x / 2 - ballSprite.getScale().x / 2, mainWindow.getSize().y / 2 - ballSprite.getScale().y / 2);
+	sf::Vector2f ballStartPos(mainWindow.getSize().x / 2, mainWindow.getSize().y / 2);
+	Ball ballObj(sf::Vector2f(initialX, initialY), sf::Color::White, 1.0f, screenScale, ballStartPos);
 
 	//creating the paddle
 	sf::RectangleShape paddleSprite;
@@ -166,7 +158,9 @@ int main()
 			//update ball motion data using delta time
 			ballObj.update(deltaTime);
 			//update ball position on screen based on physics calculations
-			ballSprite.setPosition(ballSprite.getPosition().x + ballObj.getDeltaX(), ballSprite.getPosition().y + ballObj.getDeltaY());
+			//ballSprite.setPosition(ballSprite.getPosition().x + ballObj.getDeltaX(), ballSprite.getPosition().y + ballObj.getDeltaY());
+			ballObj.getSprite().setPosition(ballObj.getSprite().getPosition().x + ballObj.getDeltaX(), 
+				ballObj.getSprite().getPosition().y + ballObj.getDeltaY());
 
 
 			++physicsUpdateCounter;
@@ -206,18 +200,19 @@ int main()
 			updateFrameTime = currentTime + timeBetweenFrameUpdates;
 			mainWindow.clear();
 			//draw stuff here
-			
-			//debug stuff
-			mainWindow.draw(physCounterText);
-			mainWindow.draw(frameCounterText);
 
 			//game stuff
-			mainWindow.draw(ballSprite);
+			//mainWindow.draw(ballSprite);
+			mainWindow.draw(ballObj.getSprite());
 			mainWindow.draw(paddleSprite);
 			mainWindow.draw(wall1);
 			mainWindow.draw(wall2);
 			mainWindow.draw(wall3);
 			mainWindow.draw(wall4);
+
+			//debug stuff
+			mainWindow.draw(physCounterText);
+			mainWindow.draw(frameCounterText);
 
 			mainWindow.display();
 		}
