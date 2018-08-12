@@ -1,7 +1,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <Chrono>
 #include <ratio>
 #include <iostream>
 #include <string>
@@ -11,10 +10,10 @@
 using std::cout;
 using std::endl;
 using std::string;
-//using namespace std::chrono;
 
 int main()
 {
+	sf::Clock mainClock; //start internal sfml clock
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	unsigned int mainWidth = desktop.width, mainHeight = desktop.height;
 	cout << "window width = " << mainWidth << "\nwindow height = " << mainHeight << endl;
@@ -64,25 +63,22 @@ int main()
 		mainWindow.display();
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////
+	//MAIN GAME
+	/////////////////////////////////////////////////////////////////////////////////
+	mainClock.restart(); //reset clock
+	sf::Time currentTime;
+	sf::Time physUpdateTimeCounter = sf::milliseconds(0);
+	sf::Time grphUpdateTimeCounter = sf::milliseconds(0);
+	sf::Time oneSecondCounter = sf::seconds(0);
+	sf::Time timeAtPrevCycle = sf::seconds(0);
+	sf::Time deltaTime;
+	sf::Time timeBetweenPhysUpdates = sf::milliseconds(16);
+	sf::Time oneSecond = sf::seconds(1);
+	sf::Time timeBetweenGrphUpdates = sf::milliseconds(16);
 	//duration of time between updates: 1 second / 60 = 0.016 seconds = 16 milliseconds
 	//1 second = 1000 milliseconds
 	//1 / 60 * 1000 = duration between updates in milliseconds
-	std::chrono::seconds oneSecond(1);
-	std::chrono::milliseconds oneMillisecond(1);
-	std::chrono::milliseconds timeBetweenPhysicsUpdates(16); //16 milliseconds between physics updates (60 updates a second)
-	std::chrono::milliseconds timeBetweenFrameUpdates(16); //16 milliseconds between frame draws (60 updaes per second)
-
-	std::cout << "Time between physics updates: " << timeBetweenPhysicsUpdates.count() << " milliseconds (should be: " << int(1.0 / 60.0 * 1000) << ")"
-		<< std::endl;
-
-	std::cout << "Time between frame updates: " << timeBetweenFrameUpdates.count() << " milliseconds (should be: " << int(1.0 / 60.0 * 1000) << ")"
-		<< std::endl;
-
-	std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
-	std::chrono::steady_clock::time_point lastTime = currentTime;
-	std::chrono::steady_clock::time_point updateCounterTime = currentTime + oneSecond;
-	std::chrono::steady_clock::time_point updatePhysicsTime = currentTime + timeBetweenPhysicsUpdates;
-	std::chrono::steady_clock::time_point updateFrameTime = currentTime + timeBetweenFrameUpdates;
 
 	int physicsUpdateCounter = 0; //tracks how many times physics is updated
 	string physCounterStr;
@@ -106,7 +102,7 @@ int main()
 
 
 	//creating the ball (sprite and physical object are merged in one class)
-	float initialX = 0.01f, initialY = 0.01f;
+	float initialX = 10.0f, initialY = 10.0f;
 	sf::Vector2f ballStartPos(mainWindow.getSize().x / 2, mainWindow.getSize().y / 2);
 	Ball ballObj(sf::Vector2f(initialX, initialY), sf::Color::White, 1.0f, screenScale, ballStartPos);
 
@@ -139,36 +135,39 @@ int main()
 
 	while (mainWindow.isOpen())
 	{
-		//cout << "-----------------\nNew cycle!" << endl;
+		cout << "-----------------\nNew cycle!" << endl;
 		//update time
-		lastTime = currentTime;
-		currentTime = std::chrono::steady_clock::now();
+		currentTime = mainClock.getElapsedTime();
+		deltaTime = currentTime - timeAtPrevCycle; //get delta time
+		cout << "dT = " << deltaTime.asMilliseconds() << endl;
+		//update counters
+		oneSecondCounter += deltaTime; //used for framerate and phys update stats //temp
+		physUpdateTimeCounter += deltaTime; //for updating phys
+		grphUpdateTimeCounter += deltaTime; //for updating graphics
 
 		//check if physics need to be updated
-		if (currentTime >= updatePhysicsTime)
+		if (physUpdateTimeCounter >= timeBetweenPhysUpdates)
 		{
 			cout << "Time to update physics!" << endl;
-			updatePhysicsTime = currentTime + timeBetweenPhysicsUpdates;
-
 			//update physics stuff here
 			//get delta time
-			std::chrono::duration<float, std::ratio<1, 1000>> diff = (currentTime - lastTime);
-			float deltaTime = diff.count();
-			cout << "dT = " << deltaTime << endl;
+			//deltaTime += mainClock.getElapsedTime(); //already updated at start of loop
+			cout << "dT = " << deltaTime.asSeconds() << endl;
 			//update ball motion data using delta time
-			ballObj.update(deltaTime);
+			//phys update operates in units of seconds
+			ballObj.update(deltaTime.asSeconds());
 			//update ball position on screen based on physics calculations
-			//ballSprite.setPosition(ballSprite.getPosition().x + ballObj.getDeltaX(), ballSprite.getPosition().y + ballObj.getDeltaY());
+			//can move this into ball.update() member
 			ballObj.getSprite().setPosition(ballObj.getSprite().getPosition().x + ballObj.getDeltaX(), 
 				ballObj.getSprite().getPosition().y + ballObj.getDeltaY());
 
-
+			physUpdateTimeCounter = sf::milliseconds(0); //reset counter for phys update time
 			++physicsUpdateCounter;
 		}
 
 		//check if phys counter needs updating
 		//check if fps counter needs updating
-		if (currentTime >= updateCounterTime)
+		if (oneSecondCounter >= oneSecond)
 		{
 			physCounterStr = "Physics updates per second: ";
 			physCounterStr += std::to_string(physicsUpdateCounter);
@@ -182,8 +181,9 @@ int main()
 			cout << frameCounterStr << endl;
 			frameUpdateCounter = 0;
 
-			updateCounterTime = currentTime + oneSecond;
+			oneSecondCounter = sf::seconds(0); //reset counter
 		}
+		
 
 		//process events
 		sf::Event eventQue;
@@ -194,10 +194,11 @@ int main()
 				mainWindow.close();
 			}
 		}
-		if (currentTime >= updateFrameTime)
+
+		//update graphics
+		if (grphUpdateTimeCounter >= timeBetweenGrphUpdates)
 		{
 			++frameUpdateCounter;
-			updateFrameTime = currentTime + timeBetweenFrameUpdates;
 			mainWindow.clear();
 			//draw stuff here
 
@@ -216,6 +217,7 @@ int main()
 
 			mainWindow.display();
 		}
+		timeAtPrevCycle = currentTime;
 	}
 	return 0;
 }
