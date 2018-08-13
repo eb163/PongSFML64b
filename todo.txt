@@ -6,12 +6,6 @@ CURRENTLY WORKING ON PROJECT USING VISUAL STUDIO
 TODO
 ----------------------
 
-rework time system using SFML time
-	-done for now
-	-works
-	-could be improved on maybe? streamlined? using counters for tracking when to update graphics and physics feels weird
-		-could use the variables for timeBetweenPhysUpdates and timeBetweenGrphUpdates to calculate the next time frame maybe
-
 might need to rework physics updating in the future
 		-ideally physics would be updated every clock tick
 		-while graphics is limited to "x times per second"
