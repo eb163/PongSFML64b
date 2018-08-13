@@ -150,16 +150,11 @@ int main()
 		{
 			cout << "Time to update physics!" << endl;
 			//update physics stuff here
-			//get delta time
-			//deltaTime += mainClock.getElapsedTime(); //already updated at start of loop
+			//already updated delta time at start of loop
 			cout << "dT = " << deltaTime.asSeconds() << endl;
-			//update ball motion data using delta time
+			//update ball motion data and sprite location using delta time
 			//phys update operates in units of seconds
 			ballObj.update(deltaTime.asSeconds());
-			//update ball position on screen based on physics calculations
-			//can move this into ball.update() member
-			ballObj.getSprite().setPosition(ballObj.getSprite().getPosition().x + ballObj.getDeltaX(), 
-				ballObj.getSprite().getPosition().y + ballObj.getDeltaY());
 
 			physUpdateTimeCounter = sf::milliseconds(0); //reset counter for phys update time
 			++physicsUpdateCounter;

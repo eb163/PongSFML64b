@@ -46,7 +46,11 @@ Ball::Ball(sf::Vector2f acc, sf::Color color, float radius, sf::Vector2f scale, 
 }
 void Ball::update(float dtime) //takes time in seconds (or fractions of)
 {
+	//update physics data
 	this->PhysObj::update(dtime);
+
+	//update sprite location
+	sprite.setPosition(sprite.getPosition().x + this->PhysObj::getDeltaX(), sprite.getPosition().y + this->PhysObj::getDeltaY());
 }
 
 sf::CircleShape& Ball::getSprite()
