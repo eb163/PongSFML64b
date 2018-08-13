@@ -27,3 +27,5 @@ Add game data such as tracking scores
 Create a basic AI to play with in 2 player that controls teh other paddle
 
 rework project structure to be self contained (currently have SFML include files pathing to Libraries in VS files)
+-removed various files produced by vs from github repo directories
+-add a .gitignore file
