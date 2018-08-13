@@ -1,7 +1,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <ratio>
 #include <iostream>
 #include <string>
 #include "PhysObj.h"
