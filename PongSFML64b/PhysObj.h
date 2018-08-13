@@ -32,4 +32,6 @@ public:
 
 	float getDeltaX();
 	float getDeltaY();
+
+	//virtual bool detectCollision();
 };

@@ -5,6 +5,7 @@
 #include <string>
 #include "PhysObj.h"
 #include "Ball.h"
+#include "Rectangle.h"
 
 using std::cout;
 using std::endl;
@@ -106,6 +107,9 @@ int main()
 	Ball ballObj(sf::Vector2f(initialX, initialY), sf::Color::White, 1.0f, screenScale, ballStartPos);
 
 	//creating the paddle
+	sf::Vector2f paddleStartPos(mainWindow.getSize().x / 2, mainWindow.getSize().y * 0.8);
+	Rectangle paddle(sf::Vector2f(0, 0), sf::Color::White, sf::Vector2f(7, 1), screenScale, paddleStartPos);
+	/*
 	sf::RectangleShape paddleSprite;
 	paddleSprite.setOutlineColor(sf::Color::White);
 	paddleSprite.setFillColor(sf::Color::White);
@@ -115,6 +119,7 @@ int main()
 
 	//initialize the paddle located arbitrarily at the bottom of the screen
 	paddleSprite.setPosition(mainWindow.getSize().x / 2, mainWindow.getSize().y * 0.8);
+	*/
 
 	//creating some basic walls to test collision detection
 	sf::RectangleShape wallSprite;
@@ -199,7 +204,8 @@ int main()
 			//game stuff
 			//mainWindow.draw(ballSprite);
 			mainWindow.draw(ballObj.getSprite());
-			mainWindow.draw(paddleSprite);
+			//mainWindow.draw(paddleSprite);
+			mainWindow.draw(paddle.getSprite());
 			mainWindow.draw(wall1);
 			mainWindow.draw(wall2);
 			mainWindow.draw(wall3);

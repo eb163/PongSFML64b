@@ -30,4 +30,6 @@ public:
 	//float getDeltaY();
 
 	sf::CircleShape& getSprite();
+
+	//bool detectCollision(PhysObj otherObj);
 };

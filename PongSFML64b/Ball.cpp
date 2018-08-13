@@ -57,3 +57,15 @@ sf::CircleShape& Ball::getSprite()
 {
 	return sprite;
 }
+/*
+bool Ball::detectCollision(PhysObj otherObj)
+{
+	//calculate area of this obj
+
+	//calculate area of other obj
+
+	//do these areas overlap?
+
+	//if y, return true
+}
+*/
