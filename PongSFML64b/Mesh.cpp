@@ -1,13 +1,13 @@
 #include "Mesh.h"
 
-float Mesh::getWidth()
+sf::Vector2f Mesh::getOrigin()
 {
-	return width;
+	return origin;
 }
 
-void Mesh::setWidth(float newWidth)
+void Mesh::setOrigin(sf::Vector2f newOrigin)
 {
-	width = newWidth;
+	origin = newOrigin;
 }
 
 float Mesh::getLength()
@@ -18,4 +18,14 @@ float Mesh::getLength()
 void Mesh::setLength(float newLength)
 {
 	length = newLength;
+}
+
+float Mesh::getWidth()
+{
+	return width;
+}
+
+void Mesh::setWidth(float newWidth)
+{
+	width = newWidth;
 }

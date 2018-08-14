@@ -20,6 +20,7 @@ Ball::Ball()
 	sprite.setScale(100.0f, 100.0f); //arbitrary for now
 	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
 
+	mesh.setOrigin(sprite.getPosition());
 	mesh.setLength(sprite.getRadius() * 2);
 	mesh.setWidth(sprite.getRadius() * 2);
 }
@@ -35,6 +36,7 @@ Ball::Ball(float initialAccX, float initialAccY)
 	sprite.setScale(100.0f, 100.0f); //arbitrary for now
 	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
 
+	mesh.setOrigin(sprite.getPosition());
 	mesh.setLength(sprite.getRadius() * 2);
 	mesh.setWidth(sprite.getRadius() * 2);
 }
@@ -48,8 +50,10 @@ Ball::Ball(sf::Vector2f acc, sf::Color color, float radius, sf::Vector2f scale, 
 	sprite.setOutlineColor(color);
 	sprite.setRadius(radius);
 	sprite.setScale(scale.x, scale.y);
+	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
 	sprite.setPosition(pos.x, pos.y);
 
+	mesh.setOrigin(sprite.getPosition());
 	mesh.setLength(sprite.getRadius() * 2);
 	mesh.setWidth(sprite.getRadius() * 2);
 }
@@ -60,6 +64,9 @@ void Ball::update(float dtime) //takes time in seconds (or fractions of)
 
 	//update sprite location
 	sprite.setPosition(sprite.getPosition().x + this->PhysObj::getDeltaX(), sprite.getPosition().y + this->PhysObj::getDeltaY());
+
+	//update mesh origin
+	mesh.setOrigin(sprite.getPosition());
 }
 
 sf::CircleShape& Ball::getSprite()

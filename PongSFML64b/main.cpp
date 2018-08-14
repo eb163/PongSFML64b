@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "PhysObj.h"
+#include "Mesh.h"
 #include "Ball.h"
 #include "Rectangle.h"
 
@@ -11,7 +12,7 @@ using std::cout;
 using std::endl;
 using std::string;
 
-bool detectCollision(PhysObj obj1, PhysObj obj2);
+bool detectCollision(Mesh obj1, Mesh obj2);
 
 int main()
 {
@@ -104,24 +105,13 @@ int main()
 
 
 	//creating the ball (sprite and physical object are merged in one class)
-	float initialX = 10.0f, initialY = 10.0f;
+	float initialX = 0.0f, initialY = 10.0f;
 	sf::Vector2f ballStartPos(mainWindow.getSize().x / 2, mainWindow.getSize().y / 2);
 	Ball ballObj(sf::Vector2f(initialX, initialY), sf::Color::White, 1.0f, screenScale, ballStartPos);
 
 	//creating the paddle
 	sf::Vector2f paddleStartPos(mainWindow.getSize().x / 2, mainWindow.getSize().y * 0.8);
-	Rectangle paddle(sf::Vector2f(0, 0), sf::Color::White, sf::Vector2f(7, 1), screenScale, paddleStartPos);
-	/*
-	sf::RectangleShape paddleSprite;
-	paddleSprite.setOutlineColor(sf::Color::White);
-	paddleSprite.setFillColor(sf::Color::White);
-	paddleSprite.setSize(sf::Vector2f(7, 1));
-	paddleSprite.setScale(screenMultiplier * 2, screenMultiplier * 2);
-	paddleSprite.setOrigin(paddleSprite.getSize().x / 2, paddleSprite.getSize().y / 2);
-
-	//initialize the paddle located arbitrarily at the bottom of the screen
-	paddleSprite.setPosition(mainWindow.getSize().x / 2, mainWindow.getSize().y * 0.8);
-	*/
+	Rectangle paddleObj(sf::Vector2f(0, 0), sf::Color::White, sf::Vector2f(7, 1), screenScale, paddleStartPos);
 
 	//creating some basic walls to test collision detection
 	sf::RectangleShape wallSprite;
@@ -161,6 +151,16 @@ int main()
 			//update ball motion data and sprite location using delta time
 			//phys update operates in units of seconds
 			ballObj.update(deltaTime.asSeconds());
+
+			//update paddle motion data here
+			//code goes here
+
+			//check collisions between ball and paddle or walls
+			if (detectCollision(ballObj.getMesh(), paddleObj.getMesh()))
+			{
+				//do stuff here
+				ballObj.getSprite().setFillColor(sf::Color::Red); //just to test it for now
+			}
 
 			physUpdateTimeCounter = sf::milliseconds(0); //reset counter for phys update time
 			++physicsUpdateCounter;
@@ -204,10 +204,8 @@ int main()
 			//draw stuff here
 
 			//game stuff
-			//mainWindow.draw(ballSprite);
 			mainWindow.draw(ballObj.getSprite());
-			//mainWindow.draw(paddleSprite);
-			mainWindow.draw(paddle.getSprite());
+			mainWindow.draw(paddleObj.getSprite());
 			mainWindow.draw(wall1);
 			mainWindow.draw(wall2);
 			mainWindow.draw(wall3);
@@ -217,6 +215,7 @@ int main()
 			mainWindow.draw(physCounterText);
 			mainWindow.draw(frameCounterText);
 
+			//refresh window
 			mainWindow.display();
 		}
 		timeAtPrevCycle = currentTime;
@@ -224,19 +223,32 @@ int main()
 	return 0;
 }
 
-bool detectCollision(PhysObj obj1, PhysObj obj2)
+bool detectCollision(Mesh obj1, Mesh obj2)
 {
 	//get dimensions of obj 1
-
+	sf::Vector2f dimObj1(obj1.getLength(), obj1.getWidth());
 	//get position of obj 1
-
+	sf::Vector2f posObj1 = obj1.getOrigin();
 	//get dimensions of obj 2
-
+	sf::Vector2f dimObj2(obj2.getLength(), obj2.getWidth());
 	//get position of obj 2
+	sf::Vector2f posObj2 = obj2.getOrigin();
 
 	//based on position and dimensions, do obj1 and obj2 overlap?
+	//calculate distance from one mesh edge to the other mesh edge
+	float dX = (posObj1.x + dimObj1.x / 2) - (posObj2.x - dimObj2.x / 2);
+	float dY = (posObj1.y + dimObj2.y / 2) - (posObj2.y - dimObj2.y / 2);
 
+	//objs overlap if distance between them is the width or length of both objs or less
 	//if y, return true
-
+	//if ((dX <= dimObj1.x / 2 + dimObj2.x / 2) && dY <= dimObj1.y / 2 + dimObj2.y / 2)
+	//if((dX <= 0) && (dY <= 0))
+	/*
+	{
+		return true;
+	}
+	*/
 	//else return false
+	//else 
+		return false;
 }
