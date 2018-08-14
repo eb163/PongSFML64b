@@ -11,6 +11,8 @@ using std::cout;
 using std::endl;
 using std::string;
 
+bool detectCollision(PhysObj obj1, PhysObj obj2);
+
 int main()
 {
 	sf::Clock mainClock; //start internal sfml clock
@@ -220,4 +222,21 @@ int main()
 		timeAtPrevCycle = currentTime;
 	}
 	return 0;
+}
+
+bool detectCollision(PhysObj obj1, PhysObj obj2)
+{
+	//get dimensions of obj 1
+
+	//get position of obj 1
+
+	//get dimensions of obj 2
+
+	//get position of obj 2
+
+	//based on position and dimensions, do obj1 and obj2 overlap?
+
+	//if y, return true
+
+	//else return false
 }

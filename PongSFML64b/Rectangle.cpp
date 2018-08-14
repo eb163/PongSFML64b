@@ -11,6 +11,9 @@ Rectangle::Rectangle()
 	sprite.setSize(sf::Vector2f(1.0f, 1.0f));
 	sprite.setScale(100.0f, 100.0f); //arbitrary for now
 	sprite.setOrigin(sprite.getSize().x / 2, sprite.getSize().y / 2);
+
+	mesh.setLength(sprite.getSize().x);
+	mesh.setLength(sprite.getSize().y);
 }
 Rectangle::Rectangle(float initialAccX, float initialAccY)
 {
@@ -23,6 +26,9 @@ Rectangle::Rectangle(float initialAccX, float initialAccY)
 	sprite.setSize(sf::Vector2f(1.0f, 1.0f));
 	sprite.setScale(100.0f, 100.0f); //arbitrary for now
 	sprite.setOrigin(sprite.getSize().x / 2, sprite.getSize().y / 2);
+
+	mesh.setLength(sprite.getSize().x);
+	mesh.setLength(sprite.getSize().y);
 }
 Rectangle::Rectangle(sf::Vector2f acc, sf::Color color, sf::Vector2f lengthwidth, sf::Vector2f scale, sf::Vector2f pos)
 {
@@ -35,6 +41,9 @@ Rectangle::Rectangle(sf::Vector2f acc, sf::Color color, sf::Vector2f lengthwidth
 	sprite.setSize(lengthwidth);
 	sprite.setScale(scale.x, scale.y);
 	sprite.setPosition(pos.x, pos.y);
+
+	mesh.setLength(sprite.getSize().x);
+	mesh.setLength(sprite.getSize().y);
 }
 
 void Rectangle::update(float dtime)
@@ -47,4 +56,9 @@ void Rectangle::update(float dtime)
 sf::RectangleShape& Rectangle::getSprite()
 {
 	return sprite;
+}
+
+Mesh& Rectangle::getMesh()
+{
+	return mesh;
 }

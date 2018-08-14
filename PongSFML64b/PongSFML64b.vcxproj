@@ -122,11 +122,13 @@
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="PhysObj.cpp" />
     <ClCompile Include="Rectangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="PhysObj.h" />
     <ClInclude Include="Rectangle.h" />
   </ItemGroup>

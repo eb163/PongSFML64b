@@ -1,5 +1,6 @@
 #pragma once
 #include "PhysObj.h"
+#include "Mesh.h"
 #include <SFML/Graphics.hpp>
 #include <iostream> //debug
 
@@ -17,6 +18,7 @@ class Ball: public PhysObj
 {
 private:
 	sf::CircleShape sprite;
+	Mesh mesh; //rectangular mesh for now
 public:
 	Ball();
 	Ball(float initialAccX, float initialAccY);
@@ -30,6 +32,8 @@ public:
 	//float getDeltaY();
 
 	sf::CircleShape& getSprite();
+
+	Mesh& getMesh();
 
 	//bool detectCollision(PhysObj otherObj);
 };

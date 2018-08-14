@@ -19,6 +19,9 @@ Ball::Ball()
 	sprite.setRadius(1.0f);
 	sprite.setScale(100.0f, 100.0f); //arbitrary for now
 	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
+
+	mesh.setLength(sprite.getRadius() * 2);
+	mesh.setWidth(sprite.getRadius() * 2);
 }
 Ball::Ball(float initialAccX, float initialAccY)
 {
@@ -31,6 +34,9 @@ Ball::Ball(float initialAccX, float initialAccY)
 	sprite.setRadius(1.0f);
 	sprite.setScale(100.0f, 100.0f); //arbitrary for now
 	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
+
+	mesh.setLength(sprite.getRadius() * 2);
+	mesh.setWidth(sprite.getRadius() * 2);
 }
 Ball::Ball(sf::Vector2f acc, sf::Color color, float radius, sf::Vector2f scale, sf::Vector2f pos)
 {
@@ -43,6 +49,9 @@ Ball::Ball(sf::Vector2f acc, sf::Color color, float radius, sf::Vector2f scale, 
 	sprite.setRadius(radius);
 	sprite.setScale(scale.x, scale.y);
 	sprite.setPosition(pos.x, pos.y);
+
+	mesh.setLength(sprite.getRadius() * 2);
+	mesh.setWidth(sprite.getRadius() * 2);
 }
 void Ball::update(float dtime) //takes time in seconds (or fractions of)
 {
@@ -56,6 +65,11 @@ void Ball::update(float dtime) //takes time in seconds (or fractions of)
 sf::CircleShape& Ball::getSprite()
 {
 	return sprite;
+}
+
+Mesh& Ball::getMesh()
+{
+	return mesh;
 }
 /*
 bool Ball::detectCollision(PhysObj otherObj)

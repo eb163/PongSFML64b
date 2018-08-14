@@ -1,12 +1,14 @@
 #pragma once
 
 #include "PhysObj.h"
+#include "Mesh.h"
 #include <SFML/Graphics.hpp>
 
 class Rectangle : public PhysObj
 {
 private:
 	sf::RectangleShape sprite;
+	Mesh mesh;
 public:
 	Rectangle();
 	Rectangle(float initialAccX, float initialAccY);
@@ -14,6 +16,8 @@ public:
 	void update(float dtime);
 
 	sf::RectangleShape& getSprite();
+
+	Mesh& getMesh();
 
 	//bool detectCollision(PhysObj otherObj);
 };
