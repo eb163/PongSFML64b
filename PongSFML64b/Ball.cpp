@@ -37,8 +37,8 @@ Ball::Ball(float initialAccX, float initialAccY)
 	sprite.setOrigin(sprite.getRadius(), sprite.getRadius());
 
 	mesh.setOrigin(sprite.getPosition());
-	mesh.setLength(sprite.getRadius() * 2);
-	mesh.setWidth(sprite.getRadius() * 2);
+	mesh.setLength(sprite.getRadius() * sprite.getScale().x * 2);
+	mesh.setWidth(sprite.getRadius() * sprite.getScale().y * 2);
 }
 Ball::Ball(sf::Vector2f acc, sf::Color color, float radius, sf::Vector2f scale, sf::Vector2f pos)
 {
@@ -54,8 +54,8 @@ Ball::Ball(sf::Vector2f acc, sf::Color color, float radius, sf::Vector2f scale, 
 	sprite.setPosition(pos.x, pos.y);
 
 	mesh.setOrigin(sprite.getPosition());
-	mesh.setLength(sprite.getRadius() * 2);
-	mesh.setWidth(sprite.getRadius() * 2);
+	mesh.setLength(sprite.getRadius() * sprite.getScale().x * 2);
+	mesh.setWidth(sprite.getRadius() * sprite.getScale().y * 2);
 }
 void Ball::update(float dtime) //takes time in seconds (or fractions of)
 {

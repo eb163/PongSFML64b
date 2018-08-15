@@ -128,71 +128,86 @@ int main()
 	wall4.setRotation(90); wall4.setPosition(0, mainWindow.getSize().y / 2); //left side wall
 
 
-
+	bool pause = false; //temporary pausing code
+	sf::Event eventQue; //for processing events
 	while (mainWindow.isOpen())
 	{
-		cout << "-----------------\nNew cycle!" << endl;
-		//update time
-		currentTime = mainClock.getElapsedTime();
-		deltaTime = currentTime - timeAtPrevCycle; //get delta time
-		cout << "dT = " << deltaTime.asMilliseconds() << endl;
-		//update counters
-		oneSecondCounter += deltaTime; //used for framerate and phys update stats //temp
-		physUpdateTimeCounter += deltaTime; //for updating phys
-		grphUpdateTimeCounter += deltaTime; //for updating graphics
-
-		//check if physics need to be updated
-		if (physUpdateTimeCounter >= timeBetweenPhysUpdates)
+		if (paused == false)
 		{
-			cout << "Time to update physics!" << endl;
-			//update physics stuff here
-			//already updated delta time at start of loop
-			cout << "dT = " << deltaTime.asSeconds() << endl;
-			//update ball motion data and sprite location using delta time
-			//phys update operates in units of seconds
-			ballObj.update(deltaTime.asSeconds());
+			cout << "-----------------\nNew cycle!" << endl;
+			//update time
+			currentTime = mainClock.getElapsedTime();
+			deltaTime = currentTime - timeAtPrevCycle; //get delta time
+			cout << "dT = " << deltaTime.asMilliseconds() << " milliseconds" << endl;
+			//update counters
+			oneSecondCounter += deltaTime; //used for framerate and phys update stats //temp
+			physUpdateTimeCounter += deltaTime; //for updating phys
+			grphUpdateTimeCounter += deltaTime; //for updating graphics
 
-			//update paddle motion data here
-			//code goes here
-
-			//check collisions between ball and paddle or walls
-			if (detectCollision(ballObj.getMesh(), paddleObj.getMesh()))
+			//check if physics need to be updated
+			//if (physUpdateTimeCounter >= timeBetweenPhysUpdates)
 			{
-				//do stuff here
-				ballObj.getSprite().setFillColor(sf::Color::Red); //just to test it for now
+				cout << "Time to update physics!" << endl;
+				//check collisions between ball and paddle or walls
+				if (detectCollision(ballObj.getMesh(), paddleObj.getMesh()))
+				{
+					//do stuff here
+					ballObj.getSprite().setFillColor(sf::Color::Red); //just to test it for now
+					ballObj.setAccX(0);
+					ballObj.setAccY(0);
+					ballObj.setVelX(0);
+					ballObj.setVelY(0);
+				}
+				else
+				{
+					//update physics stuff here
+					//already updated delta time at start of loop
+					cout << "dT = " << deltaTime.asSeconds() << " seconds" << endl;
+					//update ball motion data and sprite location using delta time
+					//phys update operates in units of seconds
+					ballObj.update(deltaTime.asSeconds());
+				}
+
+				//update paddle motion data here
+				//code goes here
+
+				physUpdateTimeCounter = sf::milliseconds(0); //reset counter for phys update time
+				++physicsUpdateCounter;
 			}
 
-			physUpdateTimeCounter = sf::milliseconds(0); //reset counter for phys update time
-			++physicsUpdateCounter;
-		}
+			//check if phys counter needs updating
+			//check if fps counter needs updating
+			if (oneSecondCounter >= oneSecond)
+			{
+				physCounterStr = "Physics updates per second: ";
+				physCounterStr += std::to_string(physicsUpdateCounter);
+				physCounterText.setString(physCounterStr);
+				cout << physCounterStr << endl;
+				physicsUpdateCounter = 0;
 
-		//check if phys counter needs updating
-		//check if fps counter needs updating
-		if (oneSecondCounter >= oneSecond)
-		{
-			physCounterStr = "Physics updates per second: ";
-			physCounterStr += std::to_string(physicsUpdateCounter);
-			physCounterText.setString(physCounterStr);
-			cout << physCounterStr << endl;
-			physicsUpdateCounter = 0;
+				frameCounterStr = "FPS: ";
+				frameCounterStr += std::to_string(frameUpdateCounter);
+				frameCounterText.setString(frameCounterStr);
+				cout << frameCounterStr << endl;
+				frameUpdateCounter = 0;
 
-			frameCounterStr = "FPS: ";
-			frameCounterStr += std::to_string(frameUpdateCounter);
-			frameCounterText.setString(frameCounterStr);
-			cout << frameCounterStr << endl;
-			frameUpdateCounter = 0;
-
-			oneSecondCounter = sf::seconds(0); //reset counter
+				oneSecondCounter = sf::seconds(0); //reset counter
+			}
 		}
 		
-
 		//process events
-		sf::Event eventQue;
 		while (mainWindow.pollEvent(eventQue))
 		{
-			if (eventQue.type == sf::Event::Closed)
+			switch(eventQue.type)
 			{
-				mainWindow.close();
+			case sf::Event::Closed : mainWindow.close();
+				break;
+			case sf::Event::KeyPressed : 
+				if (eventQue.key.code == sf::Keyboard::Space)
+				{
+					pause = !pause;
+				}
+				break;
 			}
 		}
 
@@ -225,30 +240,38 @@ int main()
 
 bool detectCollision(Mesh obj1, Mesh obj2)
 {
+	cout << "----------------\n COLLISION DETECTION" << endl;
 	//get dimensions of obj 1
 	sf::Vector2f dimObj1(obj1.getLength(), obj1.getWidth());
+	cout << "obj 1 dimensions: x = " << dimObj1.x << " y = " << dimObj1.y << endl; //debug
 	//get position of obj 1
 	sf::Vector2f posObj1 = obj1.getOrigin();
+	cout << "obj 1 position: (" << posObj1.x << ", " << posObj1.y << ")" << endl; //debug
 	//get dimensions of obj 2
 	sf::Vector2f dimObj2(obj2.getLength(), obj2.getWidth());
+	cout << "obj 2 dimensions: x = " << dimObj2.x << " y = " << dimObj2.y << endl; //debug
 	//get position of obj 2
 	sf::Vector2f posObj2 = obj2.getOrigin();
+	cout << "obj 2 position: (" << posObj2.x << ", " << posObj2.y << ")" << endl; //debug
 
 	//based on position and dimensions, do obj1 and obj2 overlap?
 	//calculate distance from one mesh edge to the other mesh edge
 	float dX = (posObj1.x + dimObj1.x / 2) - (posObj2.x - dimObj2.x / 2);
+	dX = abs(dX);
+	cout << "dX = " << dX << endl; //debug
 	float dY = (posObj1.y + dimObj2.y / 2) - (posObj2.y - dimObj2.y / 2);
+	dY = abs(dY);
+	cout << "dY = " << dY << endl; //debug
 
 	//objs overlap if distance between them is the width or length of both objs or less
 	//if y, return true
-	//if ((dX <= dimObj1.x / 2 + dimObj2.x / 2) && dY <= dimObj1.y / 2 + dimObj2.y / 2)
-	//if((dX <= 0) && (dY <= 0))
-	/*
+	cout << dimObj1.x / 2 + dimObj2.x / 2 << " " << dimObj1.y / 2 + dimObj2.y / 2 << endl; //debug
+	if ((dX <= dimObj1.x / 2 + dimObj2.x / 2) && dY <= dimObj1.y / 2 + dimObj2.y / 2)
 	{
 		return true;
 	}
-	*/
+	
 	//else return false
-	//else 
+	else 
 		return false;
 }
