@@ -6,15 +6,33 @@ CURRENTLY WORKING ON PROJECT USING VISUAL STUDIO
 TODO
 ----------------------
 
+Get event processing working
+	-get simple pause button (space bar) working
+
+Clean up code
+	-currently a mess
+	-maybe break stuff into functions
+
 might need to rework physics updating in the future
 		-ideally physics would be updated every clock tick
 		-while graphics is limited to "x times per second"
 
 Add a paddle for the ball to bounce off of
-	-requires drawing a rectangle - done
-	-create a Paddle class which contains a sf::Rectangle sprite and derived data from PhysObj
+	-add controls for player to move paddle back and forth
+		-most likely a key press would increase the paddle's acceleration along an axis by a set amout per press
+			-left / right - X axis
+			-up / down - Y axis
 
-Add collision detection between physobj (requires calculating a shape for bounds, like a circle or rectangle)
+Physics currently lacks any acceleration decay over time (air resistance), moving objects keep moving without slowing down
+unless code is put in  with collisionDetection to stop it
+
+Add collision detection between physobj
+	-made a Mesh class for calculating / tracking points of a shape
+	-currently only a square / rectangle shape
+	-collision detection between ball and paddle works
+		-there's a little gap between the ball and paddle, could try to remove that
+		-make a bounce() function that when called will take the ball instance and reverse the acc and vel
+			-could eventually do research to see how to do more realistic physical simulation of a bouncing ball
 
 Add a wall to bounce the ball off of (1 player game)
 
