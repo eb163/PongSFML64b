@@ -170,6 +170,7 @@ int main()
 
 				//update paddle motion data here
 				//code goes here
+				paddleObj.update(deltaTime.asSeconds());
 
 				physUpdateTimeCounter = sf::milliseconds(0); //reset counter for phys update time
 				++physicsUpdateCounter;
@@ -206,6 +207,18 @@ int main()
 				if (eventQue.key.code == sf::Keyboard::Space)
 				{
 					pause = !pause;
+				}
+				if (eventQue.key.code == sf::Keyboard::Left)
+				{
+					//paddleObj.getSprite().move(sf::Vector2f(screenScale.x * -1, 0));
+					paddleObj.setAccX(paddleObj.getAccX() - 0.01);
+					//paddleObj.setVelX(paddleObj.getVelX() - 1);
+				}
+				if (eventQue.key.code == sf::Keyboard::Right)
+				{
+					//paddleObj.getSprite().move(sf::Vector2f(screenScale.x, 0));
+					paddleObj.setAccX(paddleObj.getAccX() + 0.01);
+					//paddleObj.setVelX(paddleObj.getVelX() + 1);
 				}
 				break;
 			}

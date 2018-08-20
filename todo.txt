@@ -22,6 +22,11 @@ Add a paddle for the ball to bounce off of
 		-most likely a key press would increase the paddle's acceleration along an axis by a set amout per press
 			-left / right - X axis
 			-up / down - Y axis
+		-currently just moves the position of the paddle, rather than change the acceleration
+			-need to add accel decay over time to make it easier for player to control paddle
+			-changing paddle acceleration doesn't seem to change direction
+				-start moving paddle leftwards, then hold down right arrow, paddle will not stop
+				-same with rightwards and left arrow
 
 Physics currently lacks any acceleration decay over time (air resistance), moving objects keep moving without slowing down
 unless code is put in  with collisionDetection to stop it

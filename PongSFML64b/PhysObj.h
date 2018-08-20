@@ -30,8 +30,14 @@ public:
 	void setAccX(float newAccX);
 	void setAccY(float newAccY);
 
+	float getAccX();
+	float getAccY();
+
 	void setVelX(float newVelX);
 	void setVelY(float newVelY);
+
+	float getVelX();
+	float getVelY();
 
 	float getDeltaX();
 	float getDeltaY();

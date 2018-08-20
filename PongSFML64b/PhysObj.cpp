@@ -57,6 +57,15 @@ void PhysObj::setAccY(float newAccY)
 	//accY = newAccY;
 	pastAccY = newAccY;
 }
+float PhysObj::getAccX()
+{
+	return accX;
+}
+float PhysObj::getAccY()
+{
+	return accY;
+}
+
 void PhysObj::setVelX(float newVelX)
 {
 	pastVelX = newVelX;
@@ -64,6 +73,14 @@ void PhysObj::setVelX(float newVelX)
 void PhysObj::setVelY(float newVelY)
 {
 	pastVelY = newVelY;
+}
+float PhysObj::getVelX()
+{
+	return velX;
+}
+float PhysObj::getVelY()
+{
+	return velY;
 }
 
 float PhysObj::getDeltaX()
